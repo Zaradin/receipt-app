@@ -1,6 +1,10 @@
+import mu.KotlinLogging
 import utils.ScannerInput
 
+private val logger = KotlinLogging.logger {}
+
 fun main(args: Array<String>) {
+    runmenu()
 }
 
 fun mainMenu() : Int {
@@ -13,10 +17,6 @@ fun mainMenu() : Int {
          > |   2) List receipts             |
          > |   3) Update a receipt          |
          > |   4) Delete a receipt          |
-         > |   5)                           |
-         > |   6) Search Receipts           |
-         > |   7) Save Receipts             |
-         > |   8) Load Receipts             |
          > ----------------------------------
          > |   0) Exit                      |
          > ----------------------------------
@@ -27,10 +27,10 @@ fun runmenu() {
     do {
         val option = mainMenu()
         when(option){
-            //1 -> addReceipt()
-            //2 -> listReceipts()
-            //3 -> updateReceipt()
-            //4 -> deleteReceipt()
+            1 -> addReceipt()
+            2 -> listReceipts()
+            3 -> updateReceipt()
+            4 -> deleteReceipt()
             0 -> exitApp()
             else -> println("invalid option entered: ${option}")
         }
@@ -40,4 +40,21 @@ fun runmenu() {
 fun exitApp(){
     println("Exiting...bye")
     System.exit(0)
+}
+
+
+fun addReceipt() {
+    logger.info{"addReceipt() function invoked"}
+}
+
+fun listReceipts() {
+    logger.info { "listReceipts() function invoked" }
+}
+
+fun updateReceipt(){
+    logger.info { "updateReceipt() function invoked" }
+}
+
+fun deleteReceipt(){
+    logger.info { "deleteReceipt() function invoked" }
 }
