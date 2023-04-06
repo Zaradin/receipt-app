@@ -1,7 +1,8 @@
 package models
 
-class Receipt { var category :String,
+class Receipt ( var category :String,
                 var totalCost :Double,
-                var dateOfReceipt :String)
+                var dateOfReceipt :String
 
+){
 }
