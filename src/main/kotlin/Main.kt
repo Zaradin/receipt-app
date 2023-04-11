@@ -26,6 +26,7 @@ fun mainMenu() : Int {
          > |   2) List receipts             |
          > |   3) Update a receipt          |
          > |   4) Delete a receipt          |
+         > |   5) Search Receipts           |
          > ----------------------------------
          > |   0) Exit                      |
          > ----------------------------------
