@@ -1,11 +1,11 @@
 package models
 
-import java.util.Date
+import java.time.LocalDate
 
-class Receipt ( var storeName: String,
-                var category :String,
-                var description :String,
-                var dateOfReceipt :Date,
-                var paymentMethod : String
+data class Receipt (var storeName: String,
+               var category :String,
+               var description :String,
+               var dateOfReceipt : LocalDate,
+               var paymentMethod : String
 ){
 }
