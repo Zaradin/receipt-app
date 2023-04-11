@@ -34,6 +34,8 @@ fun mainMenu() : Int {
          > | PRODUCT MENU                   |
          > |   6) Add Product to Receipt    |
          > |   7) List Products in Receipt  |
+         > |   8) Delete Product in Receipt |
+         > |   9) Number of Products        |
          > ----------------------------------
          > |   0) Exit                      |
          > ----------------------------------
@@ -51,6 +53,8 @@ fun runmenu() {
             //5 ->
             6 -> addProductToReceipt()
             7 -> listProductsInReceipt()
+            8 -> deleteProductInReceipt()
+            9 -> numberOfProducts()
             0 -> exitApp()
             else -> println("invalid option entered: ${option}")
         }
@@ -117,3 +121,24 @@ private fun listProductsInReceipt(){
         println(receipt.listProducts())
     }
 }
+
+private fun deleteProductInReceipt(){
+    listReceipts()
+    val receipt: Receipt? = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt to delete product: "))
+    if(receipt != null) {
+        println(receipt.listProducts())
+        if(receipt.deleteProduct(readNextInt("Enter the index of the product you want to delete: "))){
+            println("Product deleted!")
+        }
+    }
+}
+
+private fun numberOfProducts(){
+    listReceipts()
+    val receipt: Receipt? = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt to get number of products: "))
+
+    if(receipt != null){
+        println(receipt.numberOfProducts())
+    }
+}
+
