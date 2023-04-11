@@ -22,4 +22,18 @@ class ReceiptAPI {
             listOfReceipts
         }
     }
+
+    fun numberOfReceipts(): Int {
+        return receipts.size
+    }
+
+    fun findReceipt(index: Int): Receipt? {
+        return if(isValidListIndex(index, receipts)){
+            receipts[index]
+        } else null
+    }
+
+    fun isValidListIndex(index: Int, list: List<Any>): Boolean {
+        return (index >= 0 && index < list.size)
+    }
 }
