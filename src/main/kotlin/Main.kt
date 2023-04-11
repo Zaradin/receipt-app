@@ -31,7 +31,9 @@ fun mainMenu() : Int {
          > |   4) Delete a receipt          |
          > |   5) Search Receipts           |
          > ----------------------------------
+         > | PRODUCT MENU                   |
          > |   6) Add Product to Receipt    |
+         > |   7) List Products in Receipt  |
          > ----------------------------------
          > |   0) Exit                      |
          > ----------------------------------
@@ -48,6 +50,7 @@ fun runmenu() {
             4 -> deleteReceipt()
             //5 ->
             6 -> addProductToReceipt()
+            7 -> listProductsInReceipt()
             0 -> exitApp()
             else -> println("invalid option entered: ${option}")
         }
@@ -64,7 +67,7 @@ fun addReceipt() {
     //logger.info{"addReceipt() function invoked"}
 
     val storeName = readNextLine("Enter the store name for the receipt: ")
-    val receiptCategory = readNextLine("Enter the category of items: ")
+    val receiptCategory = readNextLine("Enter the category of receipt: ")
     val description = readNextLine("Enter the receipt description: ")
     val dateOfReceipt = LocalDate.parse(readNextLine("Enter the date of the receipt, (13/04/23): "), formatter)
     val paymentMethod = readNextLine("Enter the payment method, (cash, card): ")
@@ -103,5 +106,14 @@ private fun addProductToReceipt() {
         if(receipt.addProduct(Product(productName = productName, productPrice = productPrice, quantityBought = quantityBought))){
             println("Product added Successfully!")
         }
+    }
+}
+
+private fun listProductsInReceipt(){
+    listReceipts()
+    val receipt: Receipt? = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt to list products: "))
+
+    if( receipt != null){
+        println(receipt.listProducts())
     }
 }

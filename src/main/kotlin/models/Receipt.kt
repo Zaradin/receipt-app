@@ -47,8 +47,5 @@ data class Receipt (var storeName: String,
     // list products
     fun listProducts() =
         if (products.isEmpty()) "\tNO PRODUCTS FOUND"
-        else products.mapIndexed { index, product ->
-            "$index: ${product.toString()}}\n"
-
-        }
+        else products.mapIndexed { index, product -> "$index: ${product.toString()}"}.joinToString(separator = "\n")
 }
