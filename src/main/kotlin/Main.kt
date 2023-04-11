@@ -1,7 +1,10 @@
 import controllers.ReceiptAPI
+import models.Product
 import models.Receipt
 import mu.KotlinLogging
 import utils.ScannerInput
+import utils.ScannerInput.readNextDouble
+import utils.ScannerInput.readNextInt
 import utils.ScannerInput.readNextLine
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -21,12 +24,14 @@ fun mainMenu() : Int {
          > ----------------------------------
          > |         RECEIPT TRACKER        |
          > ----------------------------------
-         > | NOTE MENU                      |
+         > | RECEIPT MENU                   |
          > |   1) Add a receipt             |
          > |   2) List receipts             |
          > |   3) Update a receipt          |
          > |   4) Delete a receipt          |
          > |   5) Search Receipts           |
+         > ----------------------------------
+         > |   6) Add Product to Receipt    |
          > ----------------------------------
          > |   0) Exit                      |
          > ----------------------------------
@@ -41,6 +46,8 @@ fun runmenu() {
             2 -> listReceipts()
             3 -> updateReceipt()
             4 -> deleteReceipt()
+            //5 ->
+            6 -> addProductToReceipt()
             0 -> exitApp()
             else -> println("invalid option entered: ${option}")
         }
@@ -83,4 +90,18 @@ fun updateReceipt(){
 
 fun deleteReceipt(){
     logger.info { "deleteReceipt() function invoked" }
+}
+
+private fun addProductToReceipt() {
+    listReceipts()
+    val receipt: Receipt? = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt to add a product: "))
+
+    if(receipt != null){
+        var productName = readNextLine("Enter the product name: ")
+        var productPrice = readNextDouble("Enter the price of the product: ")
+        var quantityBought = readNextInt("Enter the quantity bought: ")
+        if(receipt.addProduct(Product(productName = productName, productPrice = productPrice, quantityBought = quantityBought))){
+            println("Product added Successfully!")
+        }
+    }
 }
