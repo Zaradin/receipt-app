@@ -95,8 +95,6 @@ fun listReceipts(): String {
 
 fun updateReceipt(){
     logger.info { "updateReceipt() function invoked" }
-    // TODO: implement updateReceipt function, include validation if there are no receipts in the data store
-
     val receipts = listReceipts()
     println(receipts)
     if (receipts == "No receipts stored") {
