@@ -196,6 +196,10 @@ private fun updateProduct(){
 }
 
 private fun searchReceipts(){
+    if(receiptAPI.numberOfReceipts() == 0){
+        println("No receipts stored to search")
+        return
+    }
     val searchTerm = readNextLine("Enter store name to search receipts: ")
     println(receiptAPI.searchReceipts(searchTerm))
 }
