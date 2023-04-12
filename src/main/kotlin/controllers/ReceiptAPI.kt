@@ -1,8 +1,10 @@
 package controllers
 
 import models.Receipt
+import persistence.Serializer
 
-class ReceiptAPI {
+class ReceiptAPI(serializerType: Serializer) {
+    private var serializer: Serializer = serializerType
     private var receipts = ArrayList<Receipt>()
 
 
@@ -54,5 +56,16 @@ class ReceiptAPI {
         }
         return false
     }
+
+    @Throws(Exception::class)
+    fun load() {
+        receipts = serializer.read() as ArrayList<Receipt>
+    }
+
+    @Throws(Exception::class)
+    fun store() {
+        serializer.write(receipts)
+    }
+
 
 }
