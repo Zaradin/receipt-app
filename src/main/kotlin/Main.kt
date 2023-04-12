@@ -40,6 +40,9 @@ fun mainMenu() : Int {
          > |   9) Number of Products        |
          > |   10) Update Product Info      |
          > ----------------------------------
+         > |   20) Save Receipts            |
+         > |   21) Load Receipts            |
+         > ----------------------------------
          > |   0) Exit                      |
          > ----------------------------------
          > ==>> """.trimMargin(">"))
@@ -59,6 +62,8 @@ fun runmenu() {
             8 -> deleteProductInReceipt()
             9 -> numberOfProducts()
             10 -> updateProduct()
+            20 -> save()
+            21 -> load()
             0 -> exitApp()
             else -> println("invalid option entered: ${option}")
         }
@@ -217,5 +222,22 @@ private fun searchReceipts(){
     val searchTerm = readNextLine("Enter store name to search receipts: ")
     println(receiptAPI.searchReceipts(searchTerm))
 }
+
+fun save() {
+    try {
+        receiptAPI.store()
+    } catch (e: Exception) {
+        System.err.println("Error writing to file: $e")
+    }
+}
+
+fun load() {
+    try {
+        receiptAPI.load()
+    } catch (e: Exception) {
+        System.err.println("Error reading from file: $e")
+    }
+}
+
 
 

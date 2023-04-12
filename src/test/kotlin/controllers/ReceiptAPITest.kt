@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import persistence.XMLSerializer
+import java.io.File
 import java.time.LocalDate
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -15,8 +17,8 @@ class ReceiptAPITest {
     private var groceryReceipt: Receipt? = null
     private var clothingReceipt: Receipt? = null
     private var electronicsReceipt: Receipt? = null
-    private var populatedReceipts: ReceiptAPI? = ReceiptAPI()
-    private var emptyReceipts: ReceiptAPI? = ReceiptAPI()
+    private var populatedReceipts: ReceiptAPI? = ReceiptAPI(XMLSerializer(File("receipts.xml")))
+    private var emptyReceipts: ReceiptAPI? = ReceiptAPI(XMLSerializer(File("receipts.xml")))
 
     @BeforeEach
     fun setup(){
