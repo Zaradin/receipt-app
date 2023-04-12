@@ -6,6 +6,11 @@ class ReceiptAPI {
     private var receipts = ArrayList<Receipt>()
 
 
+    // Helper function for formatting receipts before being returned
+    private fun formatListString(receiptsToFormat: List<Receipt>): String =
+        receiptsToFormat.joinToString(separator = "\n") {receipt -> receipts.indexOf(receipt).toString() + ": " + receipt.toString()}
+
+
     // add receipt passed into the arraylist
     fun add(receipt: Receipt): Boolean {
         return receipts.add(receipt)
@@ -38,5 +43,5 @@ class ReceiptAPI {
     }
 
     fun searchReceipts(searchTerm: String) =
-        receipts.filter { receipt -> receipt.storeName.contains(searchTerm, ignoreCase = true) }
+        formatListString(receipts.filter { receipt -> receipt.storeName.contains(searchTerm, ignoreCase = true) })
 }
