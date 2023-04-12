@@ -48,7 +48,7 @@ fun runmenu() {
         val option = mainMenu()
         when(option){
             1 -> addReceipt()
-            2 -> listReceipts()
+            2 -> println(listReceipts())
             3 -> updateReceipt()
             4 -> deleteReceipt()
             5 -> searchReceipts()
@@ -95,6 +95,26 @@ fun listReceipts(): String {
 
 fun updateReceipt(){
     logger.info { "updateReceipt() function invoked" }
+    // TODO: implement updateReceipt function, include validation if there are no receipts in the data store
+
+    val receipts = listReceipts()
+    println(receipts)
+    if (receipts == "No receipts stored") {
+        return
+    }
+
+    val receiptIndex = readNextInt("Enter the index of the receipt you want to update: ")
+
+    val storeName = readNextLine("Enter the new store name for the receipt: ")
+    val receiptCategory = readNextLine("Enter the new category of receipt: ")
+    val description = readNextLine("Enter the new receipt description: ")
+    val dateOfReceipt = LocalDate.parse(readNextLine("Enter the new date of the receipt, (13/04/23): "), formatter)
+    val paymentMethod = readNextLine("Enter the new payment method, (cash, card): ")
+
+    if(receiptAPI.updateReceipt(receiptIndex, Receipt(storeName = storeName, category = receiptCategory, description = description, dateOfReceipt = dateOfReceipt, paymentMethod = paymentMethod))){
+        println("Receipt updated!")
+    }
+
 }
 
 fun deleteReceipt(){
@@ -157,6 +177,7 @@ private fun numberOfProducts(){
 }
 
 private fun updateProduct(){
+    // TODO:  Fix function so that it doesn't prompt user if there are no receipts or products in data store
     println(listReceipts())
     val receipt: Receipt? = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt to update a product: "))
 
