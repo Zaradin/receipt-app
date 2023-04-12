@@ -2,6 +2,7 @@ import controllers.ReceiptAPI
 import models.Product
 import models.Receipt
 import mu.KotlinLogging
+import persistence.JSONSerializer
 import persistence.XMLSerializer
 import utils.ScannerInput
 import utils.ScannerInput.readNextDouble
@@ -13,7 +14,8 @@ import java.time.format.DateTimeFormatter
 
 private val logger = KotlinLogging.logger {}
 
-private val receiptAPI = ReceiptAPI(XMLSerializer(File("receipts.xml")))
+//private val receiptAPI = ReceiptAPI(XMLSerializer(File("receipts.xml")))
+private val receiptAPI = ReceiptAPI(JSONSerializer(File("receipts.json")))
 
 private val formatter = DateTimeFormatter.ofPattern("dd/MM/yy")
 

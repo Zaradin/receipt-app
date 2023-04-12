@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import persistence.JSONSerializer
 import persistence.XMLSerializer
 import java.io.File
 import java.time.LocalDate
@@ -162,6 +163,45 @@ class ReceiptAPITest {
             assertEquals(storingReceipts.findReceipt(1), loadedReceipts.findReceipt(1))
             assertEquals(storingReceipts.findReceipt(2), loadedReceipts.findReceipt(2))
         }
+
+        @Test
+        fun `saving and loading an empty collection in JSON doesn't crash app`() {
+            // Saving an empty receipts.json file.
+            val storingReceipts = ReceiptAPI(JSONSerializer(File("receipts.json")))
+            storingReceipts.store()
+
+            //Loading the empty receipts.json file into a new object
+            val loadedReceipts = ReceiptAPI(JSONSerializer(File("receipts.json")))
+            loadedReceipts.load()
+
+            //Comparing the source of the receipts (storingReceipts) with the JSON loaded notes (loadedReceipts)
+            assertEquals(0, storingReceipts.numberOfReceipts())
+            assertEquals(0, loadedReceipts.numberOfReceipts())
+            assertEquals(storingReceipts.numberOfReceipts(), loadedReceipts.numberOfReceipts())
+        }
+
+        @Test
+        fun `saving and loading an loaded collection in JSON doesn't loose data`() {
+            // Storing 3 receipts to the receipts.json file.
+            val storingReceipts = ReceiptAPI(JSONSerializer(File("receipts.json")))
+            storingReceipts.add(groceryReceipt!!)
+            storingReceipts.add(clothingReceipt!!)
+            storingReceipts.add(electronicsReceipt!!)
+            storingReceipts.store()
+
+            //Loading receipts.json into a different collection
+            val loadedReceipts = ReceiptAPI(JSONSerializer(File("receipts.json")))
+            loadedReceipts.load()
+
+            //Comparing the source of the receipts (storingReceipts) with the JSON loaded notes (loadedReceipts)
+            assertEquals(3, storingReceipts.numberOfReceipts())
+            assertEquals(3, loadedReceipts.numberOfReceipts())
+            assertEquals(storingReceipts.numberOfReceipts(), loadedReceipts.numberOfReceipts())
+            assertEquals(storingReceipts.findReceipt(0), loadedReceipts.findReceipt(0))
+            assertEquals(storingReceipts.findReceipt(1), loadedReceipts.findReceipt(1))
+            assertEquals(storingReceipts.findReceipt(2), loadedReceipts.findReceipt(2))
+        }
+
     }
 
 }
