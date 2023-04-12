@@ -117,7 +117,11 @@ fun updateReceipt(){
 
 fun deleteReceipt(){
     //logger.info { "deleteReceipt() function invoked" }
+    val receipts = listReceipts()
     println(listReceipts())
+    if (receipts == "No receipts stored") {
+        return
+    }
     val receipt: Receipt? = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt you want to delete: "))
 
     if (receipt != null) {
