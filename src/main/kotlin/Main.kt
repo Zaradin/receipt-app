@@ -87,10 +87,10 @@ fun addReceipt() {
     }
 }
 
-fun listReceipts() {
+fun listReceipts(): String {
     //logger.info { "listReceipts() function invoked" }
 
-    println(receiptAPI.listAllReceipts())
+    return receiptAPI.listAllReceipts()
 }
 
 fun updateReceipt(){
@@ -98,11 +98,19 @@ fun updateReceipt(){
 }
 
 fun deleteReceipt(){
-    logger.info { "deleteReceipt() function invoked" }
+    //logger.info { "deleteReceipt() function invoked" }
+    println(listReceipts())
+    val receipt: Receipt? = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt you want to delete: "))
+
+    if (receipt != null) {
+        if(receiptAPI.deleteReceipt(receipt)){
+            println("Receipt Deleted!")
+        }
+    }
 }
 
 private fun addProductToReceipt() {
-    listReceipts()
+    println(listReceipts())
     val receipt: Receipt? = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt to add a product: "))
 
     if(receipt != null){
@@ -115,17 +123,21 @@ private fun addProductToReceipt() {
     }
 }
 
-private fun listProductsInReceipt(){
-    listReceipts()
-    val receipt: Receipt? = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt to list products: "))
-
-    if( receipt != null){
+private fun listProductsInReceipt() {
+    val receipts = listReceipts()
+    println(receipts)
+    if (receipts == "No receipts stored") {
+        return
+    }
+    val receipt = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt to list products: "))
+    if (receipt != null) {
         println(receipt.listProducts())
     }
 }
 
+
 private fun deleteProductInReceipt(){
-    listReceipts()
+    println(listReceipts())
     val receipt: Receipt? = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt to delete product: "))
     if(receipt != null) {
         println(receipt.listProducts())
@@ -136,7 +148,7 @@ private fun deleteProductInReceipt(){
 }
 
 private fun numberOfProducts(){
-    listReceipts()
+    println(listReceipts())
     val receipt: Receipt? = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt to get number of products: "))
 
     if(receipt != null){
@@ -145,7 +157,7 @@ private fun numberOfProducts(){
 }
 
 private fun updateProduct(){
-    listReceipts()
+    println(listReceipts())
     val receipt: Receipt? = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt to update a product: "))
 
     println(receipt?.listProducts())

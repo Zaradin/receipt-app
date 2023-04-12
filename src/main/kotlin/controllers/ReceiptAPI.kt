@@ -37,4 +37,8 @@ class ReceiptAPI {
 
     fun searchReceipts(searchTerm: String) =
         formatListString(receipts.filter { receipt -> receipt.storeName.contains(searchTerm, ignoreCase = true) })
+
+    fun deleteReceipt(receiptToDelete: Receipt): Boolean {
+        return receipts.remove(receiptToDelete)
+    }
 }
