@@ -51,7 +51,7 @@ fun runmenu() {
             2 -> listReceipts()
             3 -> updateReceipt()
             4 -> deleteReceipt()
-            //5 ->
+            5 -> searchReceipts()
             6 -> addProductToReceipt()
             7 -> listProductsInReceipt()
             8 -> deleteProductInReceipt()
@@ -158,6 +158,11 @@ private fun updateProduct(){
     if(receipt?.updateProduct(productIndex, Product(productName = newProductName, productPrice = newProductPrice, quantityBought = newQuantityBought)) == true){
         println("Product Updated!")
     }
+}
+
+private fun searchReceipts(){
+    val searchTerm = readNextLine("Enter store name to search receipts: ")
+    println(receiptAPI.searchReceipts(searchTerm))
 }
 
 
