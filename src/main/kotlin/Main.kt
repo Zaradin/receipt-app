@@ -160,4 +160,9 @@ private fun updateProduct(){
     }
 }
 
+private fun searchReceipts(){
+    val searchTerm = readNextLine("Enter store name to search receipts: ")
+    println(receiptAPI.searchReceipts(searchTerm))
+}
+
 
