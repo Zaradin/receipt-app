@@ -132,7 +132,11 @@ fun deleteReceipt(){
 }
 
 private fun addProductToReceipt() {
-    println(listReceipts())
+    val receipts = listReceipts()
+    println(receipts)
+    if (receipts == "No receipts stored") {
+        return
+    }
     val receipt: Receipt? = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt to add a product: "))
 
     if(receipt != null){
@@ -159,7 +163,11 @@ private fun listProductsInReceipt() {
 
 
 private fun deleteProductInReceipt(){
-    println(listReceipts())
+    val receipts = listReceipts()
+    println(receipts)
+    if (receipts == "No receipts stored") {
+        return
+    }
     val receipt: Receipt? = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt to delete product: "))
     if(receipt != null) {
         println(receipt.listProducts())
@@ -170,7 +178,11 @@ private fun deleteProductInReceipt(){
 }
 
 private fun numberOfProducts(){
-    println(listReceipts())
+    val receipts = listReceipts()
+    println(receipts)
+    if (receipts == "No receipts stored") {
+        return
+    }
     val receipt: Receipt? = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt to get number of products: "))
 
     if(receipt != null){
@@ -179,8 +191,11 @@ private fun numberOfProducts(){
 }
 
 private fun updateProduct(){
-    // TODO:  Fix function so that it doesn't prompt user if there are no receipts or products in data store
-    println(listReceipts())
+    val receipts = listReceipts()
+    println(receipts)
+    if (receipts == "No receipts stored") {
+        return
+    }
     val receipt: Receipt? = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt to update a product: "))
 
     println(receipt?.listProducts())
