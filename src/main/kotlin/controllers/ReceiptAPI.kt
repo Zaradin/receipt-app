@@ -16,17 +16,10 @@ class ReceiptAPI {
         return receipts.add(receipt)
     }
 
-    fun listAllReceipts(): String {
-        return if (receipts.isEmpty()) {
-            "No receipts stored"
-        } else {
-            var listOfReceipts = ""
-            for(i in receipts.indices) {
-                listOfReceipts += "${i}: ${receipts[i].toString()} \n"
-            }
-            listOfReceipts
-        }
-    }
+    // list all receipts in arraylist
+    fun listAllReceipts() =
+        if(receipts.isEmpty()) "No receipts stored"
+        else formatListString(receipts)
 
     fun numberOfReceipts(): Int {
         return receipts.size
