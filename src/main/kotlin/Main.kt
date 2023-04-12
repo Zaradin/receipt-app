@@ -36,6 +36,7 @@ fun mainMenu() : Int {
          > |   7) List Products in Receipt  |
          > |   8) Delete Product in Receipt |
          > |   9) Number of Products        |
+         > |   10) Update Product Info      |
          > ----------------------------------
          > |   0) Exit                      |
          > ----------------------------------
@@ -55,6 +56,7 @@ fun runmenu() {
             7 -> listProductsInReceipt()
             8 -> deleteProductInReceipt()
             9 -> numberOfProducts()
+            10 -> updateProduct()
             0 -> exitApp()
             else -> println("invalid option entered: ${option}")
         }
@@ -141,4 +143,21 @@ private fun numberOfProducts(){
         println(receipt.numberOfProducts())
     }
 }
+
+private fun updateProduct(){
+    listReceipts()
+    val receipt: Receipt? = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt to update a product: "))
+
+    println(receipt?.listProducts())
+
+    var productIndex: Int = readNextInt("Enter the index of the product you would like to update: ")
+    var newProductName = readNextLine("Enter the new product name: ")
+    var newProductPrice = readNextDouble("Enter the new price of the product: ")
+    var newQuantityBought = readNextInt("Enter the new quantity bought: ")
+
+    if(receipt?.updateProduct(productIndex, Product(productName = newProductName, productPrice = newProductPrice, quantityBought = newQuantityBought)) == true){
+        println("Product Updated!")
+    }
+}
+
 

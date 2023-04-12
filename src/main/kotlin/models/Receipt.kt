@@ -37,18 +37,20 @@ data class Receipt (var storeName: String,
     }
 
     // update the product
-//    fun updateProduct(id: Int, newProduct: Product): Boolean {
-//        val productToUpdate = findOne(id)
-//        if(productToUpdate != null){
-//
-//        }
-//    }
+    fun updateProduct(id: Int, newProduct: Product): Boolean {
+        val productToUpdate = findOne(id)
+        if(productToUpdate != null){
+            productToUpdate.productName = newProduct.productName
+            productToUpdate.productPrice = newProduct.productPrice
+            productToUpdate.quantityBought = newProduct.quantityBought
+            return true
+        }
+        return false
+    }
 
     // list products
     fun listProducts() =
         if (products.isEmpty()) "\tNO PRODUCTS FOUND"
         else products.mapIndexed { index, product -> "$index: ${product.toString()}"}.joinToString(separator = "\n")
-
-    // get number of products in receipt
 
 }
