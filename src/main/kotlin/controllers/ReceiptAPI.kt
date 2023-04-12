@@ -36,4 +36,7 @@ class ReceiptAPI {
     fun isValidListIndex(index: Int, list: List<Any>): Boolean {
         return (index >= 0 && index < list.size)
     }
+
+    fun searchReceipts(searchTerm: String) =
+        receipts.filter { receipt -> receipt.storeName.contains(searchTerm, ignoreCase = true) }
 }

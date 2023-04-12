@@ -51,7 +51,7 @@ fun runmenu() {
             2 -> listReceipts()
             3 -> updateReceipt()
             4 -> deleteReceipt()
-            //5 ->
+            5 -> searchReceipts()
             6 -> addProductToReceipt()
             7 -> listProductsInReceipt()
             8 -> deleteProductInReceipt()
