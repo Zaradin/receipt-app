@@ -1,7 +1,10 @@
 import controllers.ReceiptAPI
+import models.Product
 import models.Receipt
 import mu.KotlinLogging
 import utils.ScannerInput
+import utils.ScannerInput.readNextDouble
+import utils.ScannerInput.readNextInt
 import utils.ScannerInput.readNextLine
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -21,11 +24,19 @@ fun mainMenu() : Int {
          > ----------------------------------
          > |         RECEIPT TRACKER        |
          > ----------------------------------
-         > | NOTE MENU                      |
+         > | RECEIPT MENU                   |
          > |   1) Add a receipt             |
          > |   2) List receipts             |
          > |   3) Update a receipt          |
          > |   4) Delete a receipt          |
+         > |   5) Search Receipts           |
+         > ----------------------------------
+         > | PRODUCT MENU                   |
+         > |   6) Add Product to Receipt    |
+         > |   7) List Products in Receipt  |
+         > |   8) Delete Product in Receipt |
+         > |   9) Number of Products        |
+         > |   10) Update Product Info      |
          > ----------------------------------
          > |   0) Exit                      |
          > ----------------------------------
@@ -40,6 +51,12 @@ fun runmenu() {
             2 -> listReceipts()
             3 -> updateReceipt()
             4 -> deleteReceipt()
+            //5 ->
+            6 -> addProductToReceipt()
+            7 -> listProductsInReceipt()
+            8 -> deleteProductInReceipt()
+            9 -> numberOfProducts()
+            10 -> updateProduct()
             0 -> exitApp()
             else -> println("invalid option entered: ${option}")
         }
@@ -56,7 +73,7 @@ fun addReceipt() {
     //logger.info{"addReceipt() function invoked"}
 
     val storeName = readNextLine("Enter the store name for the receipt: ")
-    val receiptCategory = readNextLine("Enter the category of items: ")
+    val receiptCategory = readNextLine("Enter the category of receipt: ")
     val description = readNextLine("Enter the receipt description: ")
     val dateOfReceipt = LocalDate.parse(readNextLine("Enter the date of the receipt, (13/04/23): "), formatter)
     val paymentMethod = readNextLine("Enter the payment method, (cash, card): ")
@@ -83,3 +100,64 @@ fun updateReceipt(){
 fun deleteReceipt(){
     logger.info { "deleteReceipt() function invoked" }
 }
+
+private fun addProductToReceipt() {
+    listReceipts()
+    val receipt: Receipt? = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt to add a product: "))
+
+    if(receipt != null){
+        var productName = readNextLine("Enter the product name: ")
+        var productPrice = readNextDouble("Enter the price of the product: ")
+        var quantityBought = readNextInt("Enter the quantity bought: ")
+        if(receipt.addProduct(Product(productName = productName, productPrice = productPrice, quantityBought = quantityBought))){
+            println("Product added Successfully!")
+        }
+    }
+}
+
+private fun listProductsInReceipt(){
+    listReceipts()
+    val receipt: Receipt? = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt to list products: "))
+
+    if( receipt != null){
+        println(receipt.listProducts())
+    }
+}
+
+private fun deleteProductInReceipt(){
+    listReceipts()
+    val receipt: Receipt? = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt to delete product: "))
+    if(receipt != null) {
+        println(receipt.listProducts())
+        if(receipt.deleteProduct(readNextInt("Enter the index of the product you want to delete: "))){
+            println("Product deleted!")
+        }
+    }
+}
+
+private fun numberOfProducts(){
+    listReceipts()
+    val receipt: Receipt? = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt to get number of products: "))
+
+    if(receipt != null){
+        println(receipt.numberOfProducts())
+    }
+}
+
+private fun updateProduct(){
+    listReceipts()
+    val receipt: Receipt? = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt to update a product: "))
+
+    println(receipt?.listProducts())
+
+    var productIndex: Int = readNextInt("Enter the index of the product you would like to update: ")
+    var newProductName = readNextLine("Enter the new product name: ")
+    var newProductPrice = readNextDouble("Enter the new price of the product: ")
+    var newQuantityBought = readNextInt("Enter the new quantity bought: ")
+
+    if(receipt?.updateProduct(productIndex, Product(productName = newProductName, productPrice = newProductPrice, quantityBought = newQuantityBought)) == true){
+        println("Product Updated!")
+    }
+}
+
+
