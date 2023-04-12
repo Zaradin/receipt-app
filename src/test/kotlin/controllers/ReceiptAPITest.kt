@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 
 class ReceiptAPITest {
 
@@ -77,6 +78,44 @@ class ReceiptAPITest {
             assertTrue(receiptsString.contains("grocery"))
             assertTrue(receiptsString.contains("clothing"))
             assertTrue(receiptsString.contains("electronics"))
+        }
+
+    }
+
+    @Nested
+    inner class CRUDReceipts {
+
+        @Test
+        fun `deleteReceipt removes the specified receipt from the ArrayList`(){
+            val receiptToDelete = populatedReceipts!!.findReceipt(1)
+            assertEquals(3, populatedReceipts!!.numberOfReceipts())
+            assertTrue(populatedReceipts!!.deleteReceipt(receiptToDelete!!))
+            assertEquals(2, populatedReceipts!!.numberOfReceipts())
+        }
+
+        @Test
+        fun `deleteReceipt returns false if the specified receipt is not in the ArrayList`(){
+            val nonExistentReceipt = Receipt("TestStore", "TestCategory", "TestDescription", LocalDate.now(), "TestPayment")
+            assertFalse(populatedReceipts!!.deleteReceipt(nonExistentReceipt))
+        }
+
+        @Test
+        fun `updateReceipt updates the specified receipt in the ArrayList`(){
+            val idToUpdate = 1
+            val updatedReceipt = Receipt("UpdatedStore", "UpdatedCategory", "UpdatedDescription", LocalDate.now(), "UpdatedPayment")
+            assertTrue(populatedReceipts!!.updateReceipt(idToUpdate, updatedReceipt))
+            assertEquals(updatedReceipt.storeName, populatedReceipts!!.findReceipt(idToUpdate)?.storeName)
+            assertEquals(updatedReceipt.category, populatedReceipts!!.findReceipt(idToUpdate)?.category)
+            assertEquals(updatedReceipt.description, populatedReceipts!!.findReceipt(idToUpdate)?.description)
+            assertEquals(updatedReceipt.dateOfReceipt, populatedReceipts!!.findReceipt(idToUpdate)?.dateOfReceipt)
+            assertEquals(updatedReceipt.paymentMethod, populatedReceipts!!.findReceipt(idToUpdate)?.paymentMethod)
+        }
+
+        @Test
+        fun `updateReceipt returns false if the specified receipt is not in the ArrayList`(){
+            val idToUpdate = 10
+            val updatedReceipt = Receipt("UpdatedStore", "UpdatedCategory", "UpdatedDescription", LocalDate.now(), "UpdatedPayment")
+            assertFalse(populatedReceipts!!.updateReceipt(idToUpdate, updatedReceipt))
         }
 
     }

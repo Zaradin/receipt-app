@@ -37,4 +37,22 @@ class ReceiptAPI {
 
     fun searchReceipts(searchTerm: String) =
         formatListString(receipts.filter { receipt -> receipt.storeName.contains(searchTerm, ignoreCase = true) })
+
+    fun deleteReceipt(receiptToDelete: Receipt): Boolean {
+        return receipts.remove(receiptToDelete)
+    }
+
+    fun updateReceipt(id: Int, updatedReceipt: Receipt): Boolean {
+        val receiptToUpdate = findReceipt(id)
+        if(receiptToUpdate != null){
+            receiptToUpdate.storeName = updatedReceipt.storeName
+            receiptToUpdate.category = updatedReceipt.category
+            receiptToUpdate.description = updatedReceipt.description
+            receiptToUpdate.dateOfReceipt = updatedReceipt.dateOfReceipt
+            receiptToUpdate.paymentMethod = updatedReceipt.paymentMethod
+            return true
+        }
+        return false
+    }
+
 }

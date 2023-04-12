@@ -48,7 +48,7 @@ fun runmenu() {
         val option = mainMenu()
         when(option){
             1 -> addReceipt()
-            2 -> listReceipts()
+            2 -> println(listReceipts())
             3 -> updateReceipt()
             4 -> deleteReceipt()
             5 -> searchReceipts()
@@ -87,22 +87,48 @@ fun addReceipt() {
     }
 }
 
-fun listReceipts() {
+fun listReceipts(): String {
     //logger.info { "listReceipts() function invoked" }
 
-    println(receiptAPI.listAllReceipts())
+    return receiptAPI.listAllReceipts()
 }
 
 fun updateReceipt(){
     logger.info { "updateReceipt() function invoked" }
+    val receipts = listReceipts()
+    println(receipts)
+    if (receipts == "No receipts stored") {
+        return
+    }
+
+    val receiptIndex = readNextInt("Enter the index of the receipt you want to update: ")
+
+    val storeName = readNextLine("Enter the new store name for the receipt: ")
+    val receiptCategory = readNextLine("Enter the new category of receipt: ")
+    val description = readNextLine("Enter the new receipt description: ")
+    val dateOfReceipt = LocalDate.parse(readNextLine("Enter the new date of the receipt, (13/04/23): "), formatter)
+    val paymentMethod = readNextLine("Enter the new payment method, (cash, card): ")
+
+    if(receiptAPI.updateReceipt(receiptIndex, Receipt(storeName = storeName, category = receiptCategory, description = description, dateOfReceipt = dateOfReceipt, paymentMethod = paymentMethod))){
+        println("Receipt updated!")
+    }
+
 }
 
 fun deleteReceipt(){
-    logger.info { "deleteReceipt() function invoked" }
+    //logger.info { "deleteReceipt() function invoked" }
+    println(listReceipts())
+    val receipt: Receipt? = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt you want to delete: "))
+
+    if (receipt != null) {
+        if(receiptAPI.deleteReceipt(receipt)){
+            println("Receipt Deleted!")
+        }
+    }
 }
 
 private fun addProductToReceipt() {
-    listReceipts()
+    println(listReceipts())
     val receipt: Receipt? = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt to add a product: "))
 
     if(receipt != null){
@@ -115,17 +141,21 @@ private fun addProductToReceipt() {
     }
 }
 
-private fun listProductsInReceipt(){
-    listReceipts()
-    val receipt: Receipt? = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt to list products: "))
-
-    if( receipt != null){
+private fun listProductsInReceipt() {
+    val receipts = listReceipts()
+    println(receipts)
+    if (receipts == "No receipts stored") {
+        return
+    }
+    val receipt = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt to list products: "))
+    if (receipt != null) {
         println(receipt.listProducts())
     }
 }
 
+
 private fun deleteProductInReceipt(){
-    listReceipts()
+    println(listReceipts())
     val receipt: Receipt? = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt to delete product: "))
     if(receipt != null) {
         println(receipt.listProducts())
@@ -136,7 +166,7 @@ private fun deleteProductInReceipt(){
 }
 
 private fun numberOfProducts(){
-    listReceipts()
+    println(listReceipts())
     val receipt: Receipt? = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt to get number of products: "))
 
     if(receipt != null){
@@ -145,7 +175,8 @@ private fun numberOfProducts(){
 }
 
 private fun updateProduct(){
-    listReceipts()
+    // TODO:  Fix function so that it doesn't prompt user if there are no receipts or products in data store
+    println(listReceipts())
     val receipt: Receipt? = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt to update a product: "))
 
     println(receipt?.listProducts())
