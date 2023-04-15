@@ -42,6 +42,9 @@ fun mainMenu() : Int {
          > |   9) Number of Products        |
          > |   10) Update Product Info      |
          > ----------------------------------
+         > | SPENDING DETAILS MENU          |
+         > |   11) Open Menu                |
+         > ----------------------------------
          > |   20) Save Receipts            |
          > |   21) Load Receipts            |
          > ----------------------------------

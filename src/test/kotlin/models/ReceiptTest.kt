@@ -47,7 +47,7 @@ class ReceiptTest {
     }
 
     @Nested
-    inner class listProducts{
+    inner class ListProducts{
         @Test
         fun `test numberOfProducts returns the number of products in the receipt`() {
             assertEquals(0, receipt.numberOfProducts())
