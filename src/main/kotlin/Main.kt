@@ -98,6 +98,7 @@ fun runSpendingSubMenu(){
         when (option){
             1 -> totalSpending()
             2 -> averageReceiptSpend()
+            3 -> topCategoriesOfSpend()
             0 -> runmenu()
             else -> println("Invalid option entered: ${option}")
         }
@@ -263,6 +264,11 @@ private fun totalSpending(){
 
 private fun averageReceiptSpend(){
     println("Average Receipt Spend: €${receiptAPI.averageReceiptSpend()}")
+}
+
+private fun topCategoriesOfSpend(){
+    println("Top 5 categories of spend: ")
+    println(receiptAPI.topCategoriesBySpend())
 }
 
 

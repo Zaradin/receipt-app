@@ -2,10 +2,15 @@ package controllers
 
 import models.Receipt
 import persistence.Serializer
+import java.math.BigDecimal
+import java.math.RoundingMode
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.time.temporal.WeekFields
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.math.roundToLong
 
 class ReceiptAPI(serializerType: Serializer) {
     private var serializer: Serializer = serializerType
@@ -81,6 +86,43 @@ class ReceiptAPI(serializerType: Serializer) {
         val totalSpend = weeklySpend.values.sum()
         return totalSpend / numberOfWeeks.toDouble()
     }
+
+//    fun topCategoriesBySpend(): String {
+//        val categoriesSpendMap = mutableMapOf<String, Double>()
+//        receipts.forEach { receipt ->
+//            receipt.products.forEach { product ->
+//                val category = receipt.category.lowercase(Locale.getDefault())
+//                val spend = receipt.totalSpendForReceipt()
+//                categoriesSpendMap[category] = categoriesSpendMap.getOrDefault(category, 0.0) + spend
+//            }
+//        }
+//        return categoriesSpendMap.toList()
+//            .sortedByDescending { (_, value) -> value }
+//            .take(5).joinToString("\n") { (category, spent) -> "$category : $spent" }
+//    }
+
+    fun topCategoriesBySpend(): String {
+        val categoriesToSpend = mutableMapOf<String, Double>()
+        for (receipt in receipts) {
+            for (product in receipt.products) {
+                val category = receipt.category.lowercase(Locale.getDefault())
+                val spend = receipt.totalSpendForReceipt()
+                categoriesToSpend[category] = (categoriesToSpend[category] ?: 0.0) + spend
+            }
+        }
+
+        val topCategories = categoriesToSpend.entries
+            .sortedByDescending { it.value }
+            .take(5)
+
+        val result = StringBuilder()
+        for ((category, spend) in topCategories) {
+            result.append("$category : €${"%.2f".format(spend)}\n")
+        }
+        return result.toString()
+    }
+
+
 
     @Throws(Exception::class)
     fun load() {
