@@ -4,7 +4,6 @@ import models.Receipt
 import persistence.Serializer
 import java.time.format.DateTimeFormatter
 import java.util.Locale
-
 import kotlin.collections.ArrayList
 
 /**
@@ -202,10 +201,12 @@ class ReceiptAPI(serializerType: Serializer) {
      *
      * @throws Exception if there is an error during reading from file.
      */
+    @Suppress("UNCHECKED_CAST")
     @Throws(Exception::class)
     fun load() {
         receipts = serializer.read() as ArrayList<Receipt>
     }
+
 
     /**
      * Stores the collection of receipts to a file using the serializer.
