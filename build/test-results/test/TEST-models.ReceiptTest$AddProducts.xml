@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="models.ReceiptTest$AddProducts" tests="2" skipped="0" failures="0" errors="0" timestamp="2023-04-12T21:41:14" hostname="DESKTOP-56KB0DN" time="0.019">
+  <properties/>
+  <testcase name="test addProduct sets the productID of the added product()" classname="models.ReceiptTest$AddProducts" time="0.018"/>
+  <testcase name="test addProduct adds a product to receipt()" classname="models.ReceiptTest$AddProducts" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

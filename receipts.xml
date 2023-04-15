@@ -1,0 +1,31 @@
+<object-stream>
+  <list>
+    <models.Receipt>
+      <storeName>Dunnes</storeName>
+      <category>Grocery</category>
+      <description>Weekly groceries</description>
+      <dateOfReceipt>2023-04-12</dateOfReceipt>
+      <paymentMethod>Credit Card</paymentMethod>
+      <products class="linked-hash-set"/>
+      <lastProductID>0</lastProductID>
+    </models.Receipt>
+    <models.Receipt>
+      <storeName>TK Maxx</storeName>
+      <category>Clothing</category>
+      <description>Summer clothes</description>
+      <dateOfReceipt>2022-06-15</dateOfReceipt>
+      <paymentMethod>Debit Card</paymentMethod>
+      <products class="linked-hash-set"/>
+      <lastProductID>0</lastProductID>
+    </models.Receipt>
+    <models.Receipt>
+      <storeName>Currys</storeName>
+      <category>Electronics</category>
+      <description>New laptop</description>
+      <dateOfReceipt>2022-03-10</dateOfReceipt>
+      <paymentMethod>Cash</paymentMethod>
+      <products class="linked-hash-set"/>
+      <lastProductID>0</lastProductID>
+    </models.Receipt>
+  </list>
+</object-stream>
