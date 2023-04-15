@@ -1,31 +1,64 @@
 <object-stream>
   <list>
     <models.Receipt>
-      <storeName>Dunnes</storeName>
-      <category>Grocery</category>
-      <description>Weekly groceries</description>
-      <dateOfReceipt>2023-04-12</dateOfReceipt>
-      <paymentMethod>Credit Card</paymentMethod>
-      <products class="linked-hash-set"/>
-      <lastProductID>0</lastProductID>
+      <storeName>Aldi</storeName>
+      <category>Groceries</category>
+      <description>Weekend shop</description>
+      <dateOfReceipt>2023-04-15</dateOfReceipt>
+      <paymentMethod>cash</paymentMethod>
+      <products class="linked-hash-set">
+        <models.Product>
+          <productID>0</productID>
+          <productName>apple</productName>
+          <productPrice>1.0</productPrice>
+          <quantityBought>5</quantityBought>
+        </models.Product>
+        <models.Product>
+          <productID>1</productID>
+          <productName>banana</productName>
+          <productPrice>2.0</productPrice>
+          <quantityBought>1</quantityBought>
+        </models.Product>
+      </products>
+      <lastProductID>2</lastProductID>
     </models.Receipt>
     <models.Receipt>
-      <storeName>TK Maxx</storeName>
-      <category>Clothing</category>
-      <description>Summer clothes</description>
-      <dateOfReceipt>2022-06-15</dateOfReceipt>
-      <paymentMethod>Debit Card</paymentMethod>
-      <products class="linked-hash-set"/>
-      <lastProductID>0</lastProductID>
+      <storeName>Aldi</storeName>
+      <category>Groceries</category>
+      <description>weekly shop</description>
+      <dateOfReceipt>2023-04-10</dateOfReceipt>
+      <paymentMethod>card</paymentMethod>
+      <products class="linked-hash-set">
+        <models.Product>
+          <productID>0</productID>
+          <productName>milk</productName>
+          <productPrice>1.8</productPrice>
+          <quantityBought>5</quantityBought>
+        </models.Product>
+        <models.Product>
+          <productID>1</productID>
+          <productName>Toilet Paper</productName>
+          <productPrice>8.99</productPrice>
+          <quantityBought>1</quantityBought>
+        </models.Product>
+      </products>
+      <lastProductID>2</lastProductID>
     </models.Receipt>
     <models.Receipt>
-      <storeName>Currys</storeName>
-      <category>Electronics</category>
-      <description>New laptop</description>
-      <dateOfReceipt>2022-03-10</dateOfReceipt>
-      <paymentMethod>Cash</paymentMethod>
-      <products class="linked-hash-set"/>
-      <lastProductID>0</lastProductID>
+      <storeName>Lidi</storeName>
+      <category>Food</category>
+      <description>snacks</description>
+      <dateOfReceipt>2023-04-06</dateOfReceipt>
+      <paymentMethod>cash</paymentMethod>
+      <products class="linked-hash-set">
+        <models.Product>
+          <productID>0</productID>
+          <productName>Snack Bars</productName>
+          <productPrice>3.0</productPrice>
+          <quantityBought>2</quantityBought>
+        </models.Product>
+      </products>
+      <lastProductID>1</lastProductID>
     </models.Receipt>
   </list>
 </object-stream>

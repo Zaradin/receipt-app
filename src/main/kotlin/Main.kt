@@ -14,8 +14,8 @@ import java.time.format.DateTimeFormatter
 
 private val logger = KotlinLogging.logger {}
 
-//private val receiptAPI = ReceiptAPI(XMLSerializer(File("receipts.xml")))
-private val receiptAPI = ReceiptAPI(JSONSerializer(File("receipts.json")))
+private val receiptAPI = ReceiptAPI(XMLSerializer(File("receipts.xml")))
+//private val receiptAPI = ReceiptAPI(JSONSerializer(File("receipts.json")))
 
 private val formatter = DateTimeFormatter.ofPattern("dd/MM/yy")
 
@@ -60,7 +60,7 @@ fun spendingSubMenu() : Int {
          > ----------------------------------
          > | SPENDING SUB-MENU              |
          > |   1) Total Spending            |
-         > |   2) Average Weekly Spend      |
+         > |   2) Average Receipt Spend     |
          > |   3) Top 5 categories of spend |
          > |   4) Payment Type Breakdown    |
          > ----------------------------------
@@ -97,6 +97,7 @@ fun runSpendingSubMenu(){
         val option = spendingSubMenu()
         when (option){
             1 -> totalSpending()
+            2 -> averageReceiptSpend()
             0 -> runmenu()
             else -> println("Invalid option entered: ${option}")
         }
@@ -259,6 +260,11 @@ private fun searchReceipts(){
 private fun totalSpending(){
     println("Total spend: €${receiptAPI.totalSpendForAllReceipts()}")
 }
+
+private fun averageReceiptSpend(){
+    println("Average Receipt Spend: €${receiptAPI.averageReceiptSpend()}")
+}
+
 
 fun save() {
     try {

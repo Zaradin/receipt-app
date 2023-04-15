@@ -2,6 +2,10 @@ package controllers
 
 import models.Receipt
 import persistence.Serializer
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
+import java.time.temporal.WeekFields
 
 class ReceiptAPI(serializerType: Serializer) {
     private var serializer: Serializer = serializerType
@@ -59,6 +63,23 @@ class ReceiptAPI(serializerType: Serializer) {
 
     fun totalSpendForAllReceipts(): Double {
         return receipts.sumOf { it.totalSpendForReceipt() }
+    }
+
+    fun averageReceiptSpend(): Double {
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yy")
+        val receiptsByWeek = receipts.groupBy {
+            it.dateOfReceipt.format(DateTimeFormatter.ISO_WEEK_DATE)
+        }
+        val weeklySpend = receiptsByWeek.mapValues { (_, receipts) ->
+            receipts.flatMap { receipt ->
+                receipt.products.map { product ->
+                    product.productPrice * product.quantityBought
+                }
+            }.sum()
+        }
+        val numberOfWeeks = weeklySpend.size
+        val totalSpend = weeklySpend.values.sum()
+        return totalSpend / numberOfWeeks.toDouble()
     }
 
     @Throws(Exception::class)
