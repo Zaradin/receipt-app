@@ -2,6 +2,9 @@ package controllers
 
 import models.Receipt
 import persistence.Serializer
+import java.time.format.DateTimeFormatter
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ReceiptAPI(serializerType: Serializer) {
     private var serializer: Serializer = serializerType
@@ -55,6 +58,61 @@ class ReceiptAPI(serializerType: Serializer) {
             return true
         }
         return false
+    }
+
+    fun totalSpendForAllReceipts(): Double {
+        return receipts.sumOf { it.totalSpendForReceipt() }
+    }
+
+    fun averageReceiptSpend(): Double {
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yy")
+        val receiptsByWeek = receipts.groupBy {
+            it.dateOfReceipt.format(DateTimeFormatter.ISO_WEEK_DATE)
+        }
+        val weeklySpend = receiptsByWeek.mapValues { (_, receipts) ->
+            receipts.flatMap { receipt ->
+                receipt.products.map { product ->
+                    product.productPrice * product.quantityBought
+                }
+            }.sum()
+        }
+        val numberOfWeeks = weeklySpend.size
+        val totalSpend = weeklySpend.values.sum()
+        return totalSpend / numberOfWeeks.toDouble()
+    }
+
+    fun topCategoriesBySpend(): String {
+        val categoriesToSpend = mutableMapOf<String, Double>()
+        for (receipt in receipts) {
+            val category = receipt.category.toLowerCase()
+            val spend = receipt.totalSpendForReceipt()
+            categoriesToSpend[category] = (categoriesToSpend[category] ?: 0.0) + spend
+        }
+
+        val topCategories = categoriesToSpend.entries
+            .sortedByDescending { it.value }
+            .take(5)
+
+        val result = StringBuilder()
+        for ((category, spend) in topCategories) {
+            result.append("$category : €${"%.2f".format(spend)}\n")
+        }
+        return result.toString()
+    }
+
+
+    fun paymentBreakdown(): String {
+        val paymentTypes = receipts.flatMap { it.paymentMethod.split(", ") }
+        val paymentTypeCounts = paymentTypes.groupingBy { it }.eachCount()
+        val totalPayments = paymentTypes.size
+
+        val paymentTypePercentages = paymentTypeCounts.mapValues { (_, count) ->
+            (count.toDouble() / totalPayments) * 100
+        }
+
+        return paymentTypePercentages.map { (paymentType, percentage) ->
+            "$paymentType: ${"%.2f".format(percentage)}%"
+        }.joinToString("\n")
     }
 
     @Throws(Exception::class)

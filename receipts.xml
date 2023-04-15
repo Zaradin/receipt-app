@@ -4,7 +4,7 @@
       <storeName>Dunnes</storeName>
       <category>Grocery</category>
       <description>Weekly groceries</description>
-      <dateOfReceipt>2023-04-12</dateOfReceipt>
+      <dateOfReceipt>2023-04-15</dateOfReceipt>
       <paymentMethod>Credit Card</paymentMethod>
       <products class="linked-hash-set"/>
       <lastProductID>0</lastProductID>

@@ -4,6 +4,7 @@ import java.io.File
 import kotlin.Throws
 import com.thoughtworks.xstream.XStream
 import com.thoughtworks.xstream.io.xml.DomDriver
+import models.Product
 import models.Receipt
 import java.io.FileReader
 import java.io.FileWriter
@@ -15,6 +16,7 @@ class XMLSerializer(private val file: File) : Serializer {
     override fun read(): Any {
         val xStream = XStream(DomDriver())
         xStream.allowTypes(arrayOf(Receipt::class.java))
+        xStream.allowTypes(arrayOf(Product::class.java))
         val inputStream = xStream.createObjectInputStream(FileReader(file))
         val obj = inputStream.readObject() as Any
         inputStream.close()

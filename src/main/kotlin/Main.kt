@@ -14,8 +14,8 @@ import java.time.format.DateTimeFormatter
 
 private val logger = KotlinLogging.logger {}
 
-//private val receiptAPI = ReceiptAPI(XMLSerializer(File("receipts.xml")))
-private val receiptAPI = ReceiptAPI(JSONSerializer(File("receipts.json")))
+private val receiptAPI = ReceiptAPI(XMLSerializer(File("receipts.xml")))
+//private val receiptAPI = ReceiptAPI(JSONSerializer(File("receipts.json")))
 
 private val formatter = DateTimeFormatter.ofPattern("dd/MM/yy")
 
@@ -42,11 +42,27 @@ fun mainMenu() : Int {
          > |   9) Number of Products        |
          > |   10) Update Product Info      |
          > ----------------------------------
-         > | SPENDING DETAILS MENU          |
+         > | SPENDING ANALYSIS MENU         |
          > |   11) Open Menu                |
          > ----------------------------------
          > |   20) Save Receipts            |
          > |   21) Load Receipts            |
+         > ----------------------------------
+         > |   0) Exit                      |
+         > ----------------------------------
+         > ==>> """.trimMargin(">"))
+}
+
+fun spendingSubMenu() : Int {
+    return ScannerInput.readNextInt(""" 
+         > ----------------------------------
+         > |     SPENDING ANALYSIS MENU     |
+         > ----------------------------------
+         > | SPENDING SUB-MENU              |
+         > |   1) Total Spending            |
+         > |   2) Average Receipt Spend     |
+         > |   3) Top 5 categories of spend |
+         > |   4) Payment Type Breakdown    |
          > ----------------------------------
          > |   0) Exit                      |
          > ----------------------------------
@@ -67,10 +83,25 @@ fun runmenu() {
             8 -> deleteProductInReceipt()
             9 -> numberOfProducts()
             10 -> updateProduct()
+            11 -> runSpendingSubMenu()
             20 -> save()
             21 -> load()
             0 -> exitApp()
             else -> println("invalid option entered: ${option}")
+        }
+    } while(true)
+}
+
+fun runSpendingSubMenu(){
+    do {
+        val option = spendingSubMenu()
+        when (option){
+            1 -> totalSpending()
+            2 -> averageReceiptSpend()
+            3 -> topCategoriesOfSpend()
+            4 -> paymentBreakdown()
+            0 -> runmenu()
+            else -> println("Invalid option entered: ${option}")
         }
     } while(true)
 }
@@ -226,6 +257,23 @@ private fun searchReceipts(){
     }
     val searchTerm = readNextLine("Enter store name to search receipts: ")
     println(receiptAPI.searchReceipts(searchTerm))
+}
+
+private fun totalSpending(){
+    println("Total spend: €${receiptAPI.totalSpendForAllReceipts()}")
+}
+
+private fun averageReceiptSpend(){
+    println("Average Receipt Spend: €${receiptAPI.averageReceiptSpend()}")
+}
+
+private fun topCategoriesOfSpend(){
+    println("Top 5 categories of spend: ")
+    println(receiptAPI.topCategoriesBySpend())
+}
+
+private fun paymentBreakdown(){
+    println(receiptAPI.paymentBreakdown())
 }
 
 fun save() {
