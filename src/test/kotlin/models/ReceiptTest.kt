@@ -1,10 +1,13 @@
 package models
 
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class ReceiptTest {
 
@@ -22,7 +25,7 @@ class ReceiptTest {
     }
 
     @Nested
-    inner class AddProducts{
+    inner class AddProducts {
         @Test
         fun `test addProduct adds a product to receipt`() {
             val product = Product(
@@ -47,7 +50,7 @@ class ReceiptTest {
     }
 
     @Nested
-    inner class ListProducts{
+    inner class ListProducts {
         @Test
         fun `test numberOfProducts returns the number of products in the receipt`() {
             assertEquals(0, receipt.numberOfProducts())
@@ -122,7 +125,7 @@ class ReceiptTest {
     }
 
     @Nested
-    inner class ProductCRUD{
+    inner class ProductCRUD {
         @Test
         fun `test deleteProduct removes the product with the specified ID`() {
             val product1 = Product(
@@ -187,7 +190,7 @@ class ReceiptTest {
     }
 
     @Nested
-    inner class SpendingAnalysis{
+    inner class SpendingAnalysis {
         @Test
         fun `test totalSpendForReceipt returns the correct total spend`() {
             val product1 = Product(
@@ -206,8 +209,5 @@ class ReceiptTest {
             val actualTotalSpend = receipt.totalSpendForReceipt()
             assertEquals(expectedTotalSpend, actualTotalSpend, 0.001)
         }
-
     }
-
-
 }

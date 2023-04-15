@@ -10,11 +10,9 @@ class ReceiptAPI(serializerType: Serializer) {
     private var serializer: Serializer = serializerType
     private var receipts = ArrayList<Receipt>()
 
-
     // Helper function for formatting receipts before being returned
     private fun formatListString(receiptsToFormat: List<Receipt>): String =
-        receiptsToFormat.joinToString(separator = "\n") {receipt -> receipts.indexOf(receipt).toString() + ": " + receipt.toString()}
-
+        receiptsToFormat.joinToString(separator = "\n") { receipt -> receipts.indexOf(receipt).toString() + ": " + receipt.toString() }
 
     // add receipt passed into the arraylist
     fun add(receipt: Receipt): Boolean {
@@ -23,7 +21,7 @@ class ReceiptAPI(serializerType: Serializer) {
 
     // list all receipts in arraylist
     fun listAllReceipts() =
-        if(receipts.isEmpty()) "No receipts stored"
+        if (receipts.isEmpty()) "No receipts stored"
         else formatListString(receipts)
 
     fun numberOfReceipts(): Int {
@@ -31,12 +29,12 @@ class ReceiptAPI(serializerType: Serializer) {
     }
 
     fun findReceipt(index: Int): Receipt? {
-        return if(isValidListIndex(index, receipts)){
+        return if (isValidListIndex(index, receipts)) {
             receipts[index]
         } else null
     }
 
-    fun isValidListIndex(index: Int, list: List<Any>): Boolean {
+    private fun isValidListIndex(index: Int, list: List<Any>): Boolean {
         return (index >= 0 && index < list.size)
     }
 
@@ -49,7 +47,7 @@ class ReceiptAPI(serializerType: Serializer) {
 
     fun updateReceipt(id: Int, updatedReceipt: Receipt): Boolean {
         val receiptToUpdate = findReceipt(id)
-        if(receiptToUpdate != null){
+        if (receiptToUpdate != null) {
             receiptToUpdate.storeName = updatedReceipt.storeName
             receiptToUpdate.category = updatedReceipt.category
             receiptToUpdate.description = updatedReceipt.description
@@ -65,7 +63,6 @@ class ReceiptAPI(serializerType: Serializer) {
     }
 
     fun averageReceiptSpend(): Double {
-        val formatter = DateTimeFormatter.ofPattern("dd/MM/yy")
         val receiptsByWeek = receipts.groupBy {
             it.dateOfReceipt.format(DateTimeFormatter.ISO_WEEK_DATE)
         }
@@ -84,7 +81,7 @@ class ReceiptAPI(serializerType: Serializer) {
     fun topCategoriesBySpend(): String {
         val categoriesToSpend = mutableMapOf<String, Double>()
         for (receipt in receipts) {
-            val category = receipt.category.toLowerCase()
+            val category = receipt.category.lowercase(Locale.getDefault())
             val spend = receipt.totalSpendForReceipt()
             categoriesToSpend[category] = (categoriesToSpend[category] ?: 0.0) + spend
         }
@@ -99,7 +96,6 @@ class ReceiptAPI(serializerType: Serializer) {
         }
         return result.toString()
     }
-
 
     fun paymentBreakdown(): String {
         val paymentTypes = receipts.flatMap { it.paymentMethod.split(", ") }
@@ -124,6 +120,4 @@ class ReceiptAPI(serializerType: Serializer) {
     fun store() {
         serializer.write(receipts)
     }
-
-
 }

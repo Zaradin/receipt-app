@@ -2,12 +2,14 @@ package models
 
 import java.time.LocalDate
 
-data class Receipt (var storeName: String,
-                    var category :String,
-                    var description :String,
-                    var dateOfReceipt : LocalDate,
-                    var paymentMethod : String,
-                    var products: MutableSet<Product> = mutableSetOf()) {
+data class Receipt(
+    var storeName: String,
+    var category: String,
+    var description: String,
+    var dateOfReceipt: LocalDate,
+    var paymentMethod: String,
+    var products: MutableSet<Product> = mutableSetOf()
+) {
 
     private var lastProductID = 0
     private fun getProductID() = lastProductID++
@@ -39,7 +41,7 @@ data class Receipt (var storeName: String,
     // update the product
     fun updateProduct(id: Int, newProduct: Product): Boolean {
         val productToUpdate = findOne(id)
-        if(productToUpdate != null){
+        if (productToUpdate != null) {
             productToUpdate.productName = newProduct.productName
             productToUpdate.productPrice = newProduct.productPrice
             productToUpdate.quantityBought = newProduct.quantityBought
@@ -51,8 +53,7 @@ data class Receipt (var storeName: String,
     // list products
     fun listProducts() =
         if (products.isEmpty()) "\tNO PRODUCTS FOUND"
-        else products.mapIndexed { index, product -> "$index: ${product.toString()}"}.joinToString(separator = "\n")
-
+        else products.mapIndexed { index, product -> "$index: $product" }.joinToString(separator = "\n")
 
     // Get the total spend of all products bought
     fun totalSpendForReceipt(): Double {

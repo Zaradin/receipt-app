@@ -1,14 +1,14 @@
 package persistence
 
-import java.io.File
-import kotlin.Throws
 import com.thoughtworks.xstream.XStream
 import com.thoughtworks.xstream.io.xml.DomDriver
 import models.Product
 import models.Receipt
+import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
 import java.lang.Exception
+import kotlin.Throws
 
 class XMLSerializer(private val file: File) : Serializer {
 

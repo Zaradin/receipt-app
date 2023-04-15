@@ -2,7 +2,6 @@ import controllers.ReceiptAPI
 import models.Product
 import models.Receipt
 import mu.KotlinLogging
-import persistence.JSONSerializer
 import persistence.XMLSerializer
 import utils.ScannerInput
 import utils.ScannerInput.readNextDouble
@@ -11,20 +10,22 @@ import utils.ScannerInput.readNextLine
 import java.io.File
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import kotlin.system.exitProcess
 
 private val logger = KotlinLogging.logger {}
 
 private val receiptAPI = ReceiptAPI(XMLSerializer(File("receipts.xml")))
-//private val receiptAPI = ReceiptAPI(JSONSerializer(File("receipts.json")))
+// private val receiptAPI = ReceiptAPI(JSONSerializer(File("receipts.json")))
 
 private val formatter = DateTimeFormatter.ofPattern("dd/MM/yy")
 
-fun main(args: Array<String>) {
+fun main() {
     runmenu()
 }
 
-fun mainMenu() : Int {
-    return ScannerInput.readNextInt(""" 
+fun mainMenu(): Int {
+    return ScannerInput.readNextInt(
+        """ 
          > ----------------------------------
          > |         RECEIPT TRACKER        |
          > ----------------------------------
@@ -50,11 +51,13 @@ fun mainMenu() : Int {
          > ----------------------------------
          > |   0) Exit                      |
          > ----------------------------------
-         > ==>> """.trimMargin(">"))
+         > ==>> """.trimMargin(">")
+    )
 }
 
-fun spendingSubMenu() : Int {
-    return ScannerInput.readNextInt(""" 
+fun spendingSubMenu(): Int {
+    return ScannerInput.readNextInt(
+        """ 
          > ----------------------------------
          > |     SPENDING ANALYSIS MENU     |
          > ----------------------------------
@@ -66,13 +69,13 @@ fun spendingSubMenu() : Int {
          > ----------------------------------
          > |   0) Exit                      |
          > ----------------------------------
-         > ==>> """.trimMargin(">"))
+         > ==>> """.trimMargin(">")
+    )
 }
 
 fun runmenu() {
     do {
-        val option = mainMenu()
-        when(option){
+        when (val option = mainMenu()) {
             1 -> addReceipt()
             2 -> println(listReceipts())
             3 -> updateReceipt()
@@ -87,28 +90,27 @@ fun runmenu() {
             20 -> save()
             21 -> load()
             0 -> exitApp()
-            else -> println("invalid option entered: ${option}")
+            else -> println("invalid option entered: $option")
         }
-    } while(true)
+    } while (true)
 }
 
-fun runSpendingSubMenu(){
+fun runSpendingSubMenu() {
     do {
-        val option = spendingSubMenu()
-        when (option){
+        when (val option = spendingSubMenu()) {
             1 -> totalSpending()
             2 -> averageReceiptSpend()
             3 -> topCategoriesOfSpend()
             4 -> paymentBreakdown()
             0 -> runmenu()
-            else -> println("Invalid option entered: ${option}")
+            else -> println("Invalid option entered: $option")
         }
-    } while(true)
+    } while (true)
 }
 
-fun exitApp(){
+fun exitApp() {
     println("Exiting...bye")
-    System.exit(0)
+    exitProcess(0)
 }
 
 // helper function to check receipts (if there's no receipts in the system
@@ -122,10 +124,8 @@ fun checkReceipts(): Boolean {
     return true
 }
 
-
-
 fun addReceipt() {
-    //logger.info{"addReceipt() function invoked"}
+    // logger.info{"addReceipt() function invoked"}
 
     val storeName = readNextLine("Enter the store name for the receipt: ")
     val receiptCategory = readNextLine("Enter the category of receipt: ")
@@ -135,7 +135,7 @@ fun addReceipt() {
 
     val isAdded = receiptAPI.add(Receipt(storeName, receiptCategory, description, dateOfReceipt, paymentMethod))
 
-    if(isAdded){
+    if (isAdded) {
         println("Receipt Added Successfully")
     } else {
         println("Add Failed")
@@ -143,12 +143,12 @@ fun addReceipt() {
 }
 
 fun listReceipts(): String {
-    //logger.info { "listReceipts() function invoked" }
+    // logger.info { "listReceipts() function invoked" }
 
     return receiptAPI.listAllReceipts()
 }
 
-fun updateReceipt(){
+fun updateReceipt() {
     logger.info { "updateReceipt() function invoked" }
     if (!checkReceipts()) {
         return
@@ -162,21 +162,20 @@ fun updateReceipt(){
     val dateOfReceipt = LocalDate.parse(readNextLine("Enter the new date of the receipt, (13/04/23): "), formatter)
     val paymentMethod = readNextLine("Enter the new payment method, (cash, card): ")
 
-    if(receiptAPI.updateReceipt(receiptIndex, Receipt(storeName = storeName, category = receiptCategory, description = description, dateOfReceipt = dateOfReceipt, paymentMethod = paymentMethod))){
+    if (receiptAPI.updateReceipt(receiptIndex, Receipt(storeName = storeName, category = receiptCategory, description = description, dateOfReceipt = dateOfReceipt, paymentMethod = paymentMethod))) {
         println("Receipt updated!")
     }
-
 }
 
-fun deleteReceipt(){
-    //logger.info { "deleteReceipt() function invoked" }
+fun deleteReceipt() {
+    // logger.info { "deleteReceipt() function invoked" }
     if (!checkReceipts()) {
         return
     }
     val receipt: Receipt? = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt you want to delete: "))
 
     if (receipt != null) {
-        if(receiptAPI.deleteReceipt(receipt)){
+        if (receiptAPI.deleteReceipt(receipt)) {
             println("Receipt Deleted!")
         }
     }
@@ -188,11 +187,11 @@ private fun addProductToReceipt() {
     }
     val receipt: Receipt? = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt to add a product: "))
 
-    if(receipt != null){
-        var productName = readNextLine("Enter the product name: ")
-        var productPrice = readNextDouble("Enter the price of the product: ")
-        var quantityBought = readNextInt("Enter the quantity bought: ")
-        if(receipt.addProduct(Product(productName = productName, productPrice = productPrice, quantityBought = quantityBought))){
+    if (receipt != null) {
+        val productName = readNextLine("Enter the product name: ")
+        val productPrice = readNextDouble("Enter the price of the product: ")
+        val quantityBought = readNextInt("Enter the quantity bought: ")
+        if (receipt.addProduct(Product(productName = productName, productPrice = productPrice, quantityBought = quantityBought))) {
             println("Product added Successfully!")
         }
     }
@@ -208,32 +207,31 @@ private fun listProductsInReceipt() {
     }
 }
 
-
-private fun deleteProductInReceipt(){
+private fun deleteProductInReceipt() {
     if (!checkReceipts()) {
         return
     }
     val receipt: Receipt? = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt to delete product: "))
-    if(receipt != null) {
+    if (receipt != null) {
         println(receipt.listProducts())
-        if(receipt.deleteProduct(readNextInt("Enter the index of the product you want to delete: "))){
+        if (receipt.deleteProduct(readNextInt("Enter the index of the product you want to delete: "))) {
             println("Product deleted!")
         }
     }
 }
 
-private fun numberOfProducts(){
+private fun numberOfProducts() {
     if (!checkReceipts()) {
         return
     }
     val receipt: Receipt? = receiptAPI.findReceipt(readNextInt("Enter the index of the receipt to get number of products: "))
 
-    if(receipt != null){
+    if (receipt != null) {
         println(receipt.numberOfProducts())
     }
 }
 
-private fun updateProduct(){
+private fun updateProduct() {
     if (!checkReceipts()) {
         return
     }
@@ -241,17 +239,17 @@ private fun updateProduct(){
 
     println(receipt?.listProducts())
 
-    var productIndex: Int = readNextInt("Enter the index of the product you would like to update: ")
-    var newProductName = readNextLine("Enter the new product name: ")
-    var newProductPrice = readNextDouble("Enter the new price of the product: ")
-    var newQuantityBought = readNextInt("Enter the new quantity bought: ")
+    val productIndex: Int = readNextInt("Enter the index of the product you would like to update: ")
+    val newProductName = readNextLine("Enter the new product name: ")
+    val newProductPrice = readNextDouble("Enter the new price of the product: ")
+    val newQuantityBought = readNextInt("Enter the new quantity bought: ")
 
-    if(receipt?.updateProduct(productIndex, Product(productName = newProductName, productPrice = newProductPrice, quantityBought = newQuantityBought)) == true){
+    if (receipt?.updateProduct(productIndex, Product(productName = newProductName, productPrice = newProductPrice, quantityBought = newQuantityBought)) == true) {
         println("Product Updated!")
     }
 }
 
-private fun searchReceipts(){
+private fun searchReceipts() {
     if (!checkReceipts()) {
         return
     }
@@ -259,20 +257,20 @@ private fun searchReceipts(){
     println(receiptAPI.searchReceipts(searchTerm))
 }
 
-private fun totalSpending(){
+private fun totalSpending() {
     println("Total spend: €${receiptAPI.totalSpendForAllReceipts()}")
 }
 
-private fun averageReceiptSpend(){
+private fun averageReceiptSpend() {
     println("Average Receipt Spend: €${receiptAPI.averageReceiptSpend()}")
 }
 
-private fun topCategoriesOfSpend(){
+private fun topCategoriesOfSpend() {
     println("Top 5 categories of spend: ")
     println(receiptAPI.topCategoriesBySpend())
 }
 
-private fun paymentBreakdown(){
+private fun paymentBreakdown() {
     println(receiptAPI.paymentBreakdown())
 }
 
@@ -291,6 +289,3 @@ fun load() {
         System.err.println("Error reading from file: $e")
     }
 }
-
-
-

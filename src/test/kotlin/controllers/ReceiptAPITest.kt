@@ -23,19 +23,19 @@ class ReceiptAPITest {
     private var emptyReceipts: ReceiptAPI? = ReceiptAPI(XMLSerializer(File("receipts.xml")))
 
     @BeforeEach
-    fun setup(){
+    fun setup() {
         groceryReceipt = Receipt("Dunnes", "Grocery", "Weekly groceries", LocalDate.now(), "Credit Card")
         clothingReceipt = Receipt("TK Maxx", "Clothing", "Summer clothes", LocalDate.of(2022, 6, 15), "Debit Card")
         electronicsReceipt = Receipt("Currys", "Electronics", "New laptop", LocalDate.of(2022, 3, 10), "Cash")
 
-        //adding 3 Receipts to the receipts api
+        // adding 3 Receipts to the receipts api
         populatedReceipts!!.add(groceryReceipt!!)
         populatedReceipts!!.add(clothingReceipt!!)
         populatedReceipts!!.add(electronicsReceipt!!)
     }
 
     @AfterEach
-    fun tearDown(){
+    fun tearDown() {
         groceryReceipt = null
         clothingReceipt = null
         electronicsReceipt = null
@@ -44,9 +44,9 @@ class ReceiptAPITest {
     }
 
     @Nested
-    inner class AddReceipts{
+    inner class AddReceipts {
         @Test
-        fun `adding a receipt to a populated list adds to ArrayList`(){
+        fun `adding a receipt to a populated list adds to ArrayList`() {
             val newReceipt = Receipt("Dunnes", "Grocery", "Grocery Shopping", LocalDate.now(), "Credit")
             assertEquals(3, populatedReceipts!!.numberOfReceipts())
             assertTrue(populatedReceipts!!.add(newReceipt))
@@ -55,7 +55,7 @@ class ReceiptAPITest {
         }
 
         @Test
-        fun `adding a receipt to an empty list adds to ArrayList`(){
+        fun `adding a receipt to an empty list adds to ArrayList`() {
             val newReceipt = Receipt("Amazon", "Electronics", "New Laptop", LocalDate.now(), "Debit")
             assertEquals(0, emptyReceipts!!.numberOfReceipts())
             assertTrue(emptyReceipts!!.add(newReceipt))
@@ -65,7 +65,7 @@ class ReceiptAPITest {
     }
 
     @Nested
-    inner class ListReceipts{
+    inner class ListReceipts {
         @Test
         fun `listAllReceipts returns No Receipts Stored message when ArrayList is empty`() {
             assertEquals(0, emptyReceipts!!.numberOfReceipts())
@@ -90,16 +90,13 @@ class ReceiptAPITest {
             val expectedOutput = "0: Receipt(storeName=Dunnes, category=Grocery, description=Weekly groceries, dateOfReceipt=2023-04-15, paymentMethod=Credit Card, products=[])"
             assertEquals(expectedOutput, populatedReceipts!!.searchReceipts(searchTerm))
         }
-
-
-
     }
 
     @Nested
     inner class CRUDReceipts {
 
         @Test
-        fun `deleteReceipt removes the specified receipt from the ArrayList`(){
+        fun `deleteReceipt removes the specified receipt from the ArrayList`() {
             val receiptToDelete = populatedReceipts!!.findReceipt(1)
             assertEquals(3, populatedReceipts!!.numberOfReceipts())
             assertTrue(populatedReceipts!!.deleteReceipt(receiptToDelete!!))
@@ -107,13 +104,13 @@ class ReceiptAPITest {
         }
 
         @Test
-        fun `deleteReceipt returns false if the specified receipt is not in the ArrayList`(){
+        fun `deleteReceipt returns false if the specified receipt is not in the ArrayList`() {
             val nonExistentReceipt = Receipt("TestStore", "TestCategory", "TestDescription", LocalDate.now(), "TestPayment")
             assertFalse(populatedReceipts!!.deleteReceipt(nonExistentReceipt))
         }
 
         @Test
-        fun `updateReceipt updates the specified receipt in the ArrayList`(){
+        fun `updateReceipt updates the specified receipt in the ArrayList`() {
             val idToUpdate = 1
             val updatedReceipt = Receipt("UpdatedStore", "UpdatedCategory", "UpdatedDescription", LocalDate.now(), "UpdatedPayment")
             assertTrue(populatedReceipts!!.updateReceipt(idToUpdate, updatedReceipt))
@@ -125,12 +122,11 @@ class ReceiptAPITest {
         }
 
         @Test
-        fun `updateReceipt returns false if the specified receipt is not in the ArrayList`(){
+        fun `updateReceipt returns false if the specified receipt is not in the ArrayList`() {
             val idToUpdate = 10
             val updatedReceipt = Receipt("UpdatedStore", "UpdatedCategory", "UpdatedDescription", LocalDate.now(), "UpdatedPayment")
             assertFalse(populatedReceipts!!.updateReceipt(idToUpdate, updatedReceipt))
         }
-
     }
 
     @Nested
@@ -142,11 +138,11 @@ class ReceiptAPITest {
             val storingReceipts = ReceiptAPI(XMLSerializer(File("receipts.xml")))
             storingReceipts.store()
 
-            //Loading the empty receipts.xml file into a new object
+            // Loading the empty receipts.xml file into a new object
             val loadedReceipts = ReceiptAPI(XMLSerializer(File("receipts.xml")))
             loadedReceipts.load()
 
-            //Comparing the source of the receipts (storingReceipts) with the XML loaded notes (loadedReceipts)
+            // Comparing the source of the receipts (storingReceipts) with the XML loaded notes (loadedReceipts)
             assertEquals(0, storingReceipts.numberOfReceipts())
             assertEquals(0, loadedReceipts.numberOfReceipts())
             assertEquals(storingReceipts.numberOfReceipts(), loadedReceipts.numberOfReceipts())
@@ -161,11 +157,11 @@ class ReceiptAPITest {
             storingReceipts.add(electronicsReceipt!!)
             storingReceipts.store()
 
-            //Loading receipts.xml into a different collection
+            // Loading receipts.xml into a different collection
             val loadedReceipts = ReceiptAPI(XMLSerializer(File("receipts.xml")))
             loadedReceipts.load()
 
-            //Comparing the source of the receipts (storingReceipts) with the XML loaded notes (loadedReceipts)
+            // Comparing the source of the receipts (storingReceipts) with the XML loaded notes (loadedReceipts)
             assertEquals(3, storingReceipts.numberOfReceipts())
             assertEquals(3, loadedReceipts.numberOfReceipts())
             assertEquals(storingReceipts.numberOfReceipts(), loadedReceipts.numberOfReceipts())
@@ -180,11 +176,11 @@ class ReceiptAPITest {
             val storingReceipts = ReceiptAPI(JSONSerializer(File("receipts.json")))
             storingReceipts.store()
 
-            //Loading the empty receipts.json file into a new object
+            // Loading the empty receipts.json file into a new object
             val loadedReceipts = ReceiptAPI(JSONSerializer(File("receipts.json")))
             loadedReceipts.load()
 
-            //Comparing the source of the receipts (storingReceipts) with the JSON loaded notes (loadedReceipts)
+            // Comparing the source of the receipts (storingReceipts) with the JSON loaded notes (loadedReceipts)
             assertEquals(0, storingReceipts.numberOfReceipts())
             assertEquals(0, loadedReceipts.numberOfReceipts())
             assertEquals(storingReceipts.numberOfReceipts(), loadedReceipts.numberOfReceipts())
@@ -199,11 +195,11 @@ class ReceiptAPITest {
             storingReceipts.add(electronicsReceipt!!)
             storingReceipts.store()
 
-            //Loading receipts.json into a different collection
+            // Loading receipts.json into a different collection
             val loadedReceipts = ReceiptAPI(JSONSerializer(File("receipts.json")))
             loadedReceipts.load()
 
-            //Comparing the source of the receipts (storingReceipts) with the JSON loaded notes (loadedReceipts)
+            // Comparing the source of the receipts (storingReceipts) with the JSON loaded notes (loadedReceipts)
             assertEquals(3, storingReceipts.numberOfReceipts())
             assertEquals(3, loadedReceipts.numberOfReceipts())
             assertEquals(storingReceipts.numberOfReceipts(), loadedReceipts.numberOfReceipts())
@@ -211,11 +207,10 @@ class ReceiptAPITest {
             assertEquals(storingReceipts.findReceipt(1), loadedReceipts.findReceipt(1))
             assertEquals(storingReceipts.findReceipt(2), loadedReceipts.findReceipt(2))
         }
-
     }
 
     @Nested
-    inner class SpendingAnalysis{
+    inner class SpendingAnalysis {
         @Test
         fun `test totalSpendForAllReceipts with empty receipts`() {
             assertEquals(0.0, emptyReceipts!!.totalSpendForAllReceipts())
@@ -224,8 +219,8 @@ class ReceiptAPITest {
         @Test
         fun `test totalSpendForAllReceipts with non-empty receipts`() {
             val expectedTotalSpend = groceryReceipt!!.totalSpendForReceipt() +
-                    clothingReceipt!!.totalSpendForReceipt() +
-                    electronicsReceipt!!.totalSpendForReceipt()
+                clothingReceipt!!.totalSpendForReceipt() +
+                electronicsReceipt!!.totalSpendForReceipt()
             assertEquals(expectedTotalSpend, populatedReceipts!!.totalSpendForAllReceipts())
         }
 
@@ -247,7 +242,7 @@ class ReceiptAPITest {
             assertEquals(expectedTotalSpend, emptyReceipts!!.totalSpendForAllReceipts())
         }
 
-        //averageReceiptSpend
+        // averageReceiptSpend
         @Test
         fun `test averageReceiptSpend with one receipt`() {
             val receipt = Receipt("Tesco", "Groceries", "Weekly shopping", LocalDate.now(), "Debit Card")
@@ -310,9 +305,6 @@ class ReceiptAPITest {
             val expectedOutput = ""
             val actualOutput = emptyReceipts!!.paymentBreakdown()
             assertEquals(expectedOutput, actualOutput)
-
         }
     }
-
-
 }
