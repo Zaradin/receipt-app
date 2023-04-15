@@ -96,7 +96,7 @@ fun runSpendingSubMenu(){
     do {
         val option = spendingSubMenu()
         when (option){
-            1 -> TODO()
+            1 -> totalSpending()
             0 -> runmenu()
             else -> println("Invalid option entered: ${option}")
         }
@@ -254,6 +254,10 @@ private fun searchReceipts(){
     }
     val searchTerm = readNextLine("Enter store name to search receipts: ")
     println(receiptAPI.searchReceipts(searchTerm))
+}
+
+private fun totalSpending(){
+    println("Total spend: €${receiptAPI.totalSpendForAllReceipts()}")
 }
 
 fun save() {

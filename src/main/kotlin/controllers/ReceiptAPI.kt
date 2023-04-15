@@ -57,6 +57,10 @@ class ReceiptAPI(serializerType: Serializer) {
         return false
     }
 
+    fun totalSpendForAllReceipts(): Double {
+        return receipts.sumOf { it.totalSpendForReceipt() }
+    }
+
     @Throws(Exception::class)
     fun load() {
         receipts = serializer.read() as ArrayList<Receipt>
