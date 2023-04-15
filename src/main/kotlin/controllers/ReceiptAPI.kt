@@ -207,7 +207,6 @@ class ReceiptAPI(serializerType: Serializer) {
         receipts = serializer.read() as ArrayList<Receipt>
     }
 
-
     /**
      * Stores the collection of receipts to a file using the serializer.
      *
