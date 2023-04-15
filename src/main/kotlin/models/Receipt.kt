@@ -31,7 +31,6 @@ data class Receipt(
      */
     private fun getProductID() = lastProductID++
 
-
     /**
      * Adds a new [product] to this receipt.
      *
