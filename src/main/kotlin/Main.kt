@@ -42,11 +42,27 @@ fun mainMenu() : Int {
          > |   9) Number of Products        |
          > |   10) Update Product Info      |
          > ----------------------------------
-         > | SPENDING DETAILS MENU          |
+         > | SPENDING ANALYSIS MENU         |
          > |   11) Open Menu                |
          > ----------------------------------
          > |   20) Save Receipts            |
          > |   21) Load Receipts            |
+         > ----------------------------------
+         > |   0) Exit                      |
+         > ----------------------------------
+         > ==>> """.trimMargin(">"))
+}
+
+fun spendingSubMenu() : Int {
+    return ScannerInput.readNextInt(""" 
+         > ----------------------------------
+         > |     SPENDING ANALYSIS MENU     |
+         > ----------------------------------
+         > | SPENDING SUB-MENU              |
+         > |   1) Total Spending            |
+         > |   2) Average Weekly Spend      |
+         > |   3) Top 5 categories of spend |
+         > |   4) Payment Type Breakdown    |
          > ----------------------------------
          > |   0) Exit                      |
          > ----------------------------------
@@ -67,10 +83,22 @@ fun runmenu() {
             8 -> deleteProductInReceipt()
             9 -> numberOfProducts()
             10 -> updateProduct()
+            11 -> runSpendingSubMenu()
             20 -> save()
             21 -> load()
             0 -> exitApp()
             else -> println("invalid option entered: ${option}")
+        }
+    } while(true)
+}
+
+fun runSpendingSubMenu(){
+    do {
+        val option = spendingSubMenu()
+        when (option){
+            1 -> TODO()
+            0 -> runmenu()
+            else -> println("Invalid option entered: ${option}")
         }
     } while(true)
 }
