@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="models.ReceiptTest$ProductCRUD" tests="2" skipped="0" failures="0" errors="0" timestamp="2023-04-12T21:41:14" hostname="DESKTOP-56KB0DN" time="0.005">
-  <properties/>
-  <testcase name="test updateProduct updates the product with the specified ID()" classname="models.ReceiptTest$ProductCRUD" time="0.0"/>
-  <testcase name="test deleteProduct removes the product with the specified ID()" classname="models.ReceiptTest$ProductCRUD" time="0.005"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
