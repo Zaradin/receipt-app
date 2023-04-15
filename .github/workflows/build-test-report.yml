@@ -27,7 +27,10 @@ jobs:
 
       # Runs file permision for gradle
       - name: Run File chmod for gradle
-        run: chmod 777 ./gradlew
+        run: |
+          chmod 777 ./gradlew
+          chmod 777 gradlew
+          chmod 777 .
       # Runs the Gradle build task
       - name: Run the Gradle Build
         run: ./gradlew build
