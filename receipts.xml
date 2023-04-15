@@ -6,8 +6,15 @@
       <description>Weekly groceries</description>
       <dateOfReceipt>2023-04-15</dateOfReceipt>
       <paymentMethod>Credit Card</paymentMethod>
-      <products class="linked-hash-set"/>
-      <lastProductID>0</lastProductID>
+      <products class="linked-hash-set">
+        <models.Product>
+          <productID>0</productID>
+          <productName>Apple</productName>
+          <productPrice>3.0</productPrice>
+          <quantityBought>3</quantityBought>
+        </models.Product>
+      </products>
+      <lastProductID>1</lastProductID>
     </models.Receipt>
     <models.Receipt>
       <storeName>TK Maxx</storeName>
@@ -15,8 +22,15 @@
       <description>Summer clothes</description>
       <dateOfReceipt>2022-06-15</dateOfReceipt>
       <paymentMethod>Debit Card</paymentMethod>
-      <products class="linked-hash-set"/>
-      <lastProductID>0</lastProductID>
+      <products class="linked-hash-set">
+        <models.Product>
+          <productID>0</productID>
+          <productName>Steak</productName>
+          <productPrice>8.99</productPrice>
+          <quantityBought>2</quantityBought>
+        </models.Product>
+      </products>
+      <lastProductID>1</lastProductID>
     </models.Receipt>
     <models.Receipt>
       <storeName>Currys</storeName>
