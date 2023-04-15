@@ -84,11 +84,9 @@ class ReceiptAPI(serializerType: Serializer) {
     fun topCategoriesBySpend(): String {
         val categoriesToSpend = mutableMapOf<String, Double>()
         for (receipt in receipts) {
-            for (product in receipt.products) {
-                val category = receipt.category.lowercase(Locale.getDefault())
-                val spend = receipt.totalSpendForReceipt()
-                categoriesToSpend[category] = (categoriesToSpend[category] ?: 0.0) + spend
-            }
+            val category = receipt.category.toLowerCase()
+            val spend = receipt.totalSpendForReceipt()
+            categoriesToSpend[category] = (categoriesToSpend[category] ?: 0.0) + spend
         }
 
         val topCategories = categoriesToSpend.entries
@@ -101,6 +99,7 @@ class ReceiptAPI(serializerType: Serializer) {
         }
         return result.toString()
     }
+
 
     fun paymentBreakdown(): String {
         val paymentTypes = receipts.flatMap { it.paymentMethod.split(", ") }
