@@ -12,17 +12,38 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import kotlin.system.exitProcess
 
+/**
+ * This is the main class for the receipt-app and the starting point of execution of the application.
+ * This holds the menus and user input, along with printing to the console.
+ * @author Josh Crotty
+ * @since 2.0
+ */
+
 private val logger = KotlinLogging.logger {}
 
+/**
+ * Creates a new instance of ReceiptAPI with an XMLSerializer or JSONSerializer
+ * depending on the file extension of the specified file.
+ *
+ * @param file the file containing the serialized receipts
+ */
 private val receiptAPI = ReceiptAPI(XMLSerializer(File("receipts.xml")))
 // private val receiptAPI = ReceiptAPI(JSONSerializer(File("receipts.json")))
 
+/**
+ * The formatter used for displaying date and time information.
+ */
 private val formatter = DateTimeFormatter.ofPattern("dd/MM/yy")
 
 fun main() {
     runmenu()
 }
 
+/**
+ * Displays the main menu and returns the user's selection as an integer.
+ *
+ * @return the user's menu selection
+ */
 fun mainMenu(): Int {
     return ScannerInput.readNextInt(
         """ 
@@ -55,6 +76,11 @@ fun mainMenu(): Int {
     )
 }
 
+/**
+ * Displays the spending analysis sub-menu and returns the user's selection as an integer.
+ *
+ * @return the user's menu selection
+ */
 fun spendingSubMenu(): Int {
     return ScannerInput.readNextInt(
         """ 
@@ -73,6 +99,9 @@ fun spendingSubMenu(): Int {
     )
 }
 
+/**
+ * Runs the main menu until the user exits the application.
+ */
 fun runmenu() {
     do {
         when (val option = mainMenu()) {
@@ -95,6 +124,9 @@ fun runmenu() {
     } while (true)
 }
 
+/**
+ * Runs the spending analysis sub-menu until the user returns to the main menu.
+ */
 fun runSpendingSubMenu() {
     do {
         when (val option = spendingSubMenu()) {
@@ -108,12 +140,18 @@ fun runSpendingSubMenu() {
     } while (true)
 }
 
+/**
+ * Exits the application.
+ */
 fun exitApp() {
     println("Exiting...bye")
     exitProcess(0)
 }
 
-// helper function to check receipts (if there's no receipts in the system
+/**
+ * Checks if there are any receipts in the system.
+ * @return `true` if there are receipts, `false` otherwise.
+ */
 fun checkReceipts(): Boolean {
     val receipts = listReceipts()
     if (receipts == "No receipts stored") {
@@ -124,6 +162,9 @@ fun checkReceipts(): Boolean {
     return true
 }
 
+/**
+ * Adds a receipt to the collection.
+ */
 fun addReceipt() {
     // logger.info{"addReceipt() function invoked"}
 
@@ -142,12 +183,19 @@ fun addReceipt() {
     }
 }
 
+/**
+ * Lists all the receipts in the collection.
+ * @return A string containing all the receipts.
+ */
 fun listReceipts(): String {
     // logger.info { "listReceipts() function invoked" }
 
     return receiptAPI.listAllReceipts()
 }
 
+/**
+ * Updates a receipt in the collection.
+ */
 fun updateReceipt() {
     logger.info { "updateReceipt() function invoked" }
     if (!checkReceipts()) {
@@ -167,6 +215,9 @@ fun updateReceipt() {
     }
 }
 
+/**
+ * Deletes a receipt from the collection.
+ */
 fun deleteReceipt() {
     // logger.info { "deleteReceipt() function invoked" }
     if (!checkReceipts()) {
@@ -181,6 +232,11 @@ fun deleteReceipt() {
     }
 }
 
+/**
+ * Adds a product to a receipt.
+ * If the receipt doesn't exist, the function returns without doing anything.
+ * If the product is added successfully, a success message is printed.
+ */
 private fun addProductToReceipt() {
     if (!checkReceipts()) {
         return
@@ -197,6 +253,12 @@ private fun addProductToReceipt() {
     }
 }
 
+/**
+ * Lists all products in a receipt.
+ * If there are no receipts in the system, returns early.
+ * Prompts the user to enter the index of the receipt to list the products for.
+ * Prints the list of products for that receipt if it exists.
+ */
 private fun listProductsInReceipt() {
     if (!checkReceipts()) {
         return
@@ -207,6 +269,11 @@ private fun listProductsInReceipt() {
     }
 }
 
+/**
+ * Deletes a product from a receipt.
+ * Prompts the user to enter the index of the receipt to delete a product, and the index of the product to delete.
+ * @return Unit
+ */
 private fun deleteProductInReceipt() {
     if (!checkReceipts()) {
         return
@@ -220,6 +287,11 @@ private fun deleteProductInReceipt() {
     }
 }
 
+/**
+ * Displays the number of products in a receipt.
+ * Prompts the user to enter the index of the receipt to get the number of products, and prints the number of products.
+ * @return Unit
+ */
 private fun numberOfProducts() {
     if (!checkReceipts()) {
         return
@@ -231,6 +303,12 @@ private fun numberOfProducts() {
     }
 }
 
+/**
+ * Updates a product in a receipt.
+ * Prompts the user to enter the index of the receipt to update a product, the index of the product to update,
+ * and the new name, price and quantity of the product.
+ * @return Unit
+ */
 private fun updateProduct() {
     if (!checkReceipts()) {
         return
@@ -249,6 +327,10 @@ private fun updateProduct() {
     }
 }
 
+/**
+ * Searches receipts for a given store name and prints the matching receipts.
+ * If no receipts match, prints a message indicating so.
+ */
 private fun searchReceipts() {
     if (!checkReceipts()) {
         return
@@ -257,23 +339,39 @@ private fun searchReceipts() {
     println(receiptAPI.searchReceipts(searchTerm))
 }
 
+/**
+ * Prints the total amount spent across all receipts.
+ */
 private fun totalSpending() {
     println("Total spend: €${receiptAPI.totalSpendForAllReceipts()}")
 }
 
+/**
+ * Prints the average spend per receipt.
+ */
 private fun averageReceiptSpend() {
     println("Average Receipt Spend: €${receiptAPI.averageReceiptSpend()}")
 }
 
+/**
+ * Prints the top 5 categories by amount spent.
+ */
 private fun topCategoriesOfSpend() {
     println("Top 5 categories of spend: ")
     println(receiptAPI.topCategoriesBySpend())
 }
 
+/**
+ * Prints a breakdown of payments by payment type.
+ */
 private fun paymentBreakdown() {
     println(receiptAPI.paymentBreakdown())
 }
 
+/**
+ * Saves the current state of the receipt API to a file.
+ * If an error occurs, prints an error message to standard error.
+ */
 fun save() {
     try {
         receiptAPI.store()
@@ -282,6 +380,10 @@ fun save() {
     }
 }
 
+/**
+ * Loads the receipt API state from a file.
+ * If an error occurs, prints an error message to standard error.
+ */
 fun load() {
     try {
         receiptAPI.load()
