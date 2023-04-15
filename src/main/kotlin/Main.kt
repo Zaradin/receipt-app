@@ -99,6 +99,7 @@ fun runSpendingSubMenu(){
             1 -> totalSpending()
             2 -> averageReceiptSpend()
             3 -> topCategoriesOfSpend()
+            4 -> paymentBreakdown()
             0 -> runmenu()
             else -> println("Invalid option entered: ${option}")
         }
@@ -271,6 +272,9 @@ private fun topCategoriesOfSpend(){
     println(receiptAPI.topCategoriesBySpend())
 }
 
+private fun paymentBreakdown(){
+    println(receiptAPI.paymentBreakdown())
+}
 
 fun save() {
     try {

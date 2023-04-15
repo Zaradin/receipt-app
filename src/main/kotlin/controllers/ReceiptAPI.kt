@@ -87,20 +87,6 @@ class ReceiptAPI(serializerType: Serializer) {
         return totalSpend / numberOfWeeks.toDouble()
     }
 
-//    fun topCategoriesBySpend(): String {
-//        val categoriesSpendMap = mutableMapOf<String, Double>()
-//        receipts.forEach { receipt ->
-//            receipt.products.forEach { product ->
-//                val category = receipt.category.lowercase(Locale.getDefault())
-//                val spend = receipt.totalSpendForReceipt()
-//                categoriesSpendMap[category] = categoriesSpendMap.getOrDefault(category, 0.0) + spend
-//            }
-//        }
-//        return categoriesSpendMap.toList()
-//            .sortedByDescending { (_, value) -> value }
-//            .take(5).joinToString("\n") { (category, spent) -> "$category : $spent" }
-//    }
-
     fun topCategoriesBySpend(): String {
         val categoriesToSpend = mutableMapOf<String, Double>()
         for (receipt in receipts) {
@@ -122,7 +108,19 @@ class ReceiptAPI(serializerType: Serializer) {
         return result.toString()
     }
 
+    fun paymentBreakdown(): String {
+        val paymentTypes = receipts.flatMap { it.paymentMethod.split(", ") }
+        val paymentTypeCounts = paymentTypes.groupingBy { it }.eachCount()
+        val totalPayments = paymentTypes.size
 
+        val paymentTypePercentages = paymentTypeCounts.mapValues { (_, count) ->
+            (count.toDouble() / totalPayments) * 100
+        }
+
+        return paymentTypePercentages.map { (paymentType, percentage) ->
+            "$paymentType: ${"%.2f".format(percentage)}%"
+        }.joinToString("\n")
+    }
 
     @Throws(Exception::class)
     fun load() {
