@@ -186,5 +186,28 @@ class ReceiptTest {
         }
     }
 
+    @Nested
+    inner class SpendingAnalysis{
+        @Test
+        fun `test totalSpendForReceipt returns the correct total spend`() {
+            val product1 = Product(
+                productName = "Milk",
+                productPrice = 1.99,
+                quantityBought = 2,
+            )
+            val product2 = Product(
+                productName = "Bread",
+                productPrice = 1.49,
+                quantityBought = 1,
+            )
+            receipt.addProduct(product1)
+            receipt.addProduct(product2)
+            val expectedTotalSpend = (product1.productPrice * product1.quantityBought) + (product2.productPrice * product2.quantityBought)
+            val actualTotalSpend = receipt.totalSpendForReceipt()
+            assertEquals(expectedTotalSpend, actualTotalSpend, 0.001)
+        }
+
+    }
+
 
 }

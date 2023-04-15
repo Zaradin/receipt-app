@@ -2,15 +2,9 @@ package controllers
 
 import models.Receipt
 import persistence.Serializer
-import java.math.BigDecimal
-import java.math.RoundingMode
-import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
-import java.time.temporal.WeekFields
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.math.roundToLong
 
 class ReceiptAPI(serializerType: Serializer) {
     private var serializer: Serializer = serializerType
